@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Offside Opinions | AI Top 10s</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    /* Hero */
+    .hero {
+      width: 100%;
+      height: 65vh;
+      background: url('images/11.jpg') no-repeat center/cover;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.5);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      color: gold;
+      margin-bottom: 10px;
+      text-shadow: 0 0 15px #ffd700;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      color: #fff;
+    }
+    /* Search */
+    .search-container {
+      margin: 30px 0;
+      text-align: center;
+    }
+    .search-box {
+      width: 70%;
+      max-width: 500px;
+      padding: 12px 20px;
+      border-radius: 50px;
+      border: 2px solid gold;
+      background: #111;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+    }
+    .search-btn {
+      margin-left: -55px;
+      background: gold;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    /* Results */
+    .results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      width: 90%;
+      max-width: 1200px;
+      margin: 20px auto;
+    }
+    .card {
+      background: #1c1c1c;
+      border-radius: 12px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(255,215,0,0.6);
+    }
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    .card h3 {
+      color: gold;
+      font-size: 1.2rem;
+    }
+    .cta-btn {
+      display: inline-block;
+      margin-top: 10px;
+      background: gold;
+      color: #000;
+      padding: 8px 16px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    footer {
+      width: 100%;
+      background: #111;
+      color: gold;
+      text-align: center;
+      padding: 20px 0;
+      margin-top: 50px;
+      border-top: 1px solid gold;
+    }
+  </style>
+</head>
+<body>
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-content">
+      <h1>Offside Opinions</h1>
+      <p>The AI-powered Top 10 Hub for Football Fans</p>
+    </div>
+  </div>
+
+  <!-- Search -->
+  <div class="search-container">
+    <input type="text" class="search-box" id="searchInput" placeholder="Search Top 10 Boots, Kits, Players..." />
+    <button class="search-btn" onclick="performSearch()">Go</button>
+  </div>
+
+  <!-- Results -->
+  <div class="results" id="results"></div>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 Offside Opinions
+  </footer>
+
+  <script>
+    const fallbackImages = [
+      "images/1.jpg","images/2.jpg","images/3.jpg","images/4.jpg","images/5.jpg",
+      "images/6.jpg","images/7.jpg","images/8.jpg","images/9.jpg","images/10.jpg",
+      "images/11.jpg","images/12.jpg","images/13.jpg","images/14.jpg","images/15.jpg",
+      "images/16.jpg","images/17.jpg","images/18.jpg"
+    ];
+
+    async function performSearch() {
+      const query = document.getElementById("searchInput").value.trim();
+      const resultsContainer = document.getElementById("results");
+
+      if (!query) {
+        resultsContainer.innerHTML = "<p>Please enter a search.</p>";
+        return;
+      }
+
+      resultsContainer.innerHTML = "<p>Loading Top 10...</p>";
+
+      try {
+        // Call AI Top 10 function
+        const aiRes = await fetch("/api/ai-top10", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query })
+        });
+        const aiData = await aiRes.json();
+
+        // Call Log Search function
+        fetch("/api/log-search", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query, category: "football" })
+        });
+
+        // Render results
+        resultsContainer.innerHTML = aiData.results.map((item, i) => `
+          <div class="card">
+            <img src="${item.image || fallbackImages[i % fallbackImages.length]}" alt="${item.title}">
+            <h3>${i+1}. ${item.title}</h3>
+            <p>${item.description}</p>
+            <a href="${item.link}" target="_blank" class="cta-btn">View on Amazon</a>
+          </div>
+        `).join("");
+
+      } catch (err) {
+        resultsContainer.innerHTML = "<p>Error loading results. Please try again.</p>";
+        console.error(err);
+      }
+    }
+  </script>
+</body>
+</html>
+
+
+
