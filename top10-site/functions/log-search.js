@@ -1,22 +1,19 @@
-// /functions/log-search.js
+// /api/log-search.js
 import fs from "fs";
 import path from "path";
 
-export async function handler(event) {
+export async function handler(event, context) {
   try {
-    const { query, category } = JSON.parse(event.body);
-    const country = event.headers["x-country"] || "GB";
+    const { query, category } = JSON.parse(event.body || "{}");
     const timestamp = new Date().toISOString();
 
-    const logEntry = { query, category, country, timestamp };
+    const logEntry = { query, category, timestamp };
 
-    // Save logs to a JSON file in /tmp (works on Netlify functions)
-    const filePath = path.join("/tmp", "search-logs.json");
+    const filePath = path.join(process.cwd(), "search-logs.json");
+
     let logs = [];
-
     if (fs.existsSync(filePath)) {
-      const raw = fs.readFileSync(filePath);
-      logs = JSON.parse(raw);
+      logs = JSON.parse(fs.readFileSync(filePath, "utf8"));
     }
 
     logs.push(logEntry);
@@ -24,17 +21,11 @@ export async function handler(event) {
 
     console.log("Logged search:", logEntry);
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ status: "logged", logEntry })
-    };
+    return { statusCode: 200, body: JSON.stringify({ status: "logged" }) };
 
   } catch (err) {
-    console.error("Log search error:", err);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: err.message })
-    };
+    console.error(err);
+    return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
   }
 }
 
