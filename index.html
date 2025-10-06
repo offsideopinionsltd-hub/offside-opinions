@@ -13,9 +13,7 @@ body {
   display:flex;
   flex-direction:column;
   align-items:center;
-  background: linear-gradient(to bottom, #1c1c1c, #2a2a2a),
-              url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
-  background-size:cover;
+  background: linear-gradient(to bottom, #1c1c1c, #2a2a2a);
   position: relative;
 }
 body::before {
@@ -30,7 +28,7 @@ body::before {
 .hero {
   width:100%;
   height:65vh;
-  background:url('images/10.jpg') no-repeat center/cover; /* stadium image */
+  background:url('images/10.jpg') no-repeat center/cover;
   position:relative;
   display:flex;
   justify-content:center;
@@ -50,9 +48,14 @@ body::before {
 .hero p { color:#fff; font-size:1.2rem; text-shadow:0 0 5px #000; }
 
 /* Search */
-.search-container { margin:50px 0 50px; text-align:center; width:100%; }
+.search-container {
+  margin:50px 0 30px;
+  text-align:center;
+  width:100%;
+  max-width:600px;
+}
 .search-box {
-  width:80%; max-width:500px; padding:15px 25px; border-radius:50px; border:2px solid gold;
+  width:80%; max-width:400px; padding:15px 25px; border-radius:50px; border:2px solid gold;
   font-size:1rem; outline:none; background:#111; color:#fff;
 }
 .search-btn {
@@ -61,10 +64,22 @@ body::before {
 }
 .search-btn:hover { background:#ffd700; transform:scale(1.05); }
 
-/* Cards */
-.results { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:25px; width:90%; max-width:1200px; margin:20px auto; }
+/* Results section */
+.results-container {
+  width:100%;
+  min-height:50vh;
+  background: linear-gradient(to top, #1c1c1c, rgba(28,28,28,0.8)), url('images/11.jpg') no-repeat center/cover;
+  background-size: cover;
+  padding:50px 0;
+  display:flex;
+  justify-content:center;
+}
+.results {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:25px; width:90%; max-width:1200px;
+}
 .card {
-  background:#111; border-radius:15px; padding:20px; text-align:center;
+  background:rgba(17,17,17,0.9); border-radius:15px; padding:20px; text-align:center;
   box-shadow:0 4px 15px rgba(0,0,0,0.6); transition:transform 0.3s ease, box-shadow 0.3s ease; position:relative; border:1px solid #333;
 }
 .card:hover { transform:translateY(-5px); box-shadow:0 10px 25px rgba(255,215,0,0.6); border-color:gold; }
@@ -73,11 +88,6 @@ body::before {
 .card h3 { color:gold; margin-bottom:10px; font-size:1.3rem; }
 .cta-btn { display:inline-block; margin-top:10px; background:gold; color:#000; padding:10px 20px; border-radius:25px; text-decoration:none; font-weight:bold; transition:background 0.3s ease, transform 0.3s ease; }
 .cta-btn:hover { background:#ffd700; transform:scale(1.05); }
-
-/* Badges */
-.badge { position:absolute; top:10px; left:10px; background:red; color:#fff; padding:5px 10px; border-radius:5px; font-size:0.8rem; font-weight:bold; text-transform:uppercase; }
-.badge.featured { background:gold; color:#000; animation: glow 2s ease-in-out infinite; }
-@keyframes glow { 0% { box-shadow:0 10px 20px rgba(255,215,0,0.4); } 50% { box-shadow:0 15px 25px rgba(255,215,0,0.6); } 100% { box-shadow:0 10px 20px rgba(255,215,0,0.4); } }
 
 /* Footer */
 footer { width:100%; background:#111; color:gold; text-align:center; padding:20px 0; margin-top:50px; border-top:1px solid gold; }
@@ -96,12 +106,14 @@ footer a img { vertical-align:middle; margin:0 5px; }
 
 <!-- Search -->
 <div class="search-container">
-  <input type="text" class="search-box" placeholder="Search for Top 10 Football Boots, Kits, Players..." id="searchInput" />
+  <input type="text" class="search-box" placeholder="Search Top 10 Football Boots, Kits, Players..." id="searchInput" />
   <button class="search-btn" onclick="performSearch()">Go</button>
 </div>
 
-<!-- Search Results -->
-<div class="results" id="results"></div>
+<!-- Results -->
+<div class="results-container">
+  <div class="results" id="results"></div>
+</div>
 
 <!-- Footer -->
 <footer>
@@ -116,7 +128,6 @@ footer a img { vertical-align:middle; margin:0 5px; }
 async function performSearch() {
   const query = document.getElementById('searchInput').value.trim();
   const resultsContainer = document.getElementById('results');
-
   resultsContainer.innerHTML = `<p>Searching${query ? ` for "${query}"` : ''}...</p>`;
 
   try {
@@ -140,7 +151,7 @@ async function performSearch() {
   }
 }
 
-// Load a default Top 10 on page load
+// Load default Top 10
 window.onload = () => { 
   document.getElementById('searchInput').value = "Top 10 Football Boots";
   performSearch();
