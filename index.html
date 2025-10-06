@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Offside Opinions | The Ultimate Top 10s</title>
 <style>
 /* Base */
@@ -13,14 +13,24 @@ body {
   display:flex;
   flex-direction:column;
   align-items:center;
-  background: linear-gradient(to bottom, #1c1c1c, #2a2a2a);
+  background: linear-gradient(to bottom, #1c1c1c, #2a2a2a),
+              url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+  background-size:cover;
+  position: relative;
+}
+body::before {
+  content:"";
+  position:fixed;
+  top:0; left:0; width:100%; height:100%;
+  background: rgba(255, 255, 255, 0.02);
+  pointer-events:none;
 }
 
 /* Hero */
 .hero {
   width:100%;
   height:65vh;
-  background:url('images/10.jpg') no-repeat center/cover;
+  background:url('images/10.jpg') no-repeat center/cover; /* stadium image */
   position:relative;
   display:flex;
   justify-content:center;
@@ -39,75 +49,39 @@ body {
 .hero h1 { font-size:3rem; color:gold; margin-bottom:10px; text-shadow:0 0 15px #ffd700; }
 .hero p { color:#fff; font-size:1.2rem; text-shadow:0 0 5px #000; }
 
-/* Categories */
-.categories {
-  display:flex; justify-content:center; gap:15px; margin:25px 0; flex-wrap:wrap;
-}
-.category-btn {
-  background:#111; color:gold; border:none; padding:12px 25px; border-radius:25px; cursor:pointer; font-weight:bold;
-  transition:0.3s;
-}
-.category-btn:hover, .category-btn.active { background:gold; color:#000; transform:scale(1.05); }
-
-/* Bottom section (search + results) */
-.bottom-section {
-  width:90%;
-  max-width:1200px;
-  margin-bottom:50px;
-  padding:20px;
-  background: rgba(0,0,0,0.5); /* semi-transparent */
-  border-radius:15px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
-
 /* Search */
-.search-container {
-  width:100%;
-  text-align:center;
-  margin-bottom:30px;
-}
+.search-container { margin:50px 0 50px; text-align:center; width:100%; }
 .search-box {
   width:80%; max-width:500px; padding:15px 25px; border-radius:50px; border:2px solid gold;
   font-size:1rem; outline:none; background:#111; color:#fff;
 }
 .search-btn {
   margin-left:-55px; background:gold; border:none; padding:15px 25px; border-radius:50px;
-  cursor:pointer; font-weight:bold; transition:0.3s;
+  cursor:pointer; font-weight:bold; transition:0.3s; box-shadow:0 0 10px #ffd700;
 }
 .search-btn:hover { background:#ffd700; transform:scale(1.05); }
 
-/* Results */
-.results {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:25px;
-  width:100%;
+/* Cards */
+.results { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:25px; width:90%; max-width:1200px; margin:20px auto; }
+.card {
+  background:#111; border-radius:15px; padding:20px; text-align:center;
+  box-shadow:0 4px 15px rgba(0,0,0,0.6); transition:transform 0.3s ease, box-shadow 0.3s ease; position:relative; border:1px solid #333;
 }
-.results .card {
-  background: rgba(17,17,17,0.8);
-  border-radius:15px;
-  padding:20px;
-  text-align:center;
-  box-shadow:0 4px 15px rgba(0,0,0,0.6);
-  position:relative;
-}
-.results .card img { width:100%; border-radius:15px; margin-bottom:15px; transition:transform 0.3s ease; }
-.results .card h3 { color:gold; margin-bottom:10px; font-size:1.3rem; }
-.cta-btn { display:inline-block; margin-top:10px; background:gold; color:#000; padding:10px 20px; border-radius:25px; text-decoration:none; font-weight:bold; transition:0.3s; }
+.card:hover { transform:translateY(-5px); box-shadow:0 10px 25px rgba(255,215,0,0.6); border-color:gold; }
+.card img { width:100%; border-radius:15px; margin-bottom:15px; transition:transform 0.3s ease; }
+.card:hover img { transform:scale(1.05); }
+.card h3 { color:gold; margin-bottom:10px; font-size:1.3rem; }
+.cta-btn { display:inline-block; margin-top:10px; background:gold; color:#000; padding:10px 20px; border-radius:25px; text-decoration:none; font-weight:bold; transition:background 0.3s ease, transform 0.3s ease; }
 .cta-btn:hover { background:#ffd700; transform:scale(1.05); }
 
+/* Badges */
+.badge { position:absolute; top:10px; left:10px; background:red; color:#fff; padding:5px 10px; border-radius:5px; font-size:0.8rem; font-weight:bold; text-transform:uppercase; }
+.badge.featured { background:gold; color:#000; animation: glow 2s ease-in-out infinite; }
+@keyframes glow { 0% { box-shadow:0 10px 20px rgba(255,215,0,0.4); } 50% { box-shadow:0 15px 25px rgba(255,215,0,0.6); } 100% { box-shadow:0 10px 20px rgba(255,215,0,0.4); } }
+
 /* Footer */
-footer {
-  width:100%;
-  background:#111;
-  color:gold;
-  text-align:center;
-  padding:20px 0;
-  margin-top:50px;
-  border-top:1px solid gold;
-}
+footer { width:100%; background:#111; color:gold; text-align:center; padding:20px 0; margin-top:50px; border-top:1px solid gold; }
+footer a img { vertical-align:middle; margin:0 5px; }
 </style>
 </head>
 <body>
@@ -120,63 +94,57 @@ footer {
   </div>
 </div>
 
-<!-- Categories -->
-<div class="categories">
-  <button class="category-btn active" onclick="selectCategory('all', this)">All</button>
-  <button class="category-btn" onclick="selectCategory('football', this)">Football</button>
-  <button class="category-btn" onclick="selectCategory('kits', this)">Kits</button>
+<!-- Search -->
+<div class="search-container">
+  <input type="text" class="search-box" placeholder="Search for Top 10 Football Boots, Kits, Players..." id="searchInput" />
+  <button class="search-btn" onclick="performSearch()">Go</button>
 </div>
 
-<!-- Bottom section -->
-<section class="bottom-section">
-  <!-- Search -->
-  <div class="search-container">
-    <input type="text" class="search-box" id="searchInput" placeholder="Search Top 10 Football Boots, Kits, Players...">
-    <button class="search-btn" onclick="performSearch()">Go</button>
-  </div>
-
-  <!-- Results -->
-  <div class="results" id="results"></div>
-</section>
+<!-- Search Results -->
+<div class="results" id="results"></div>
 
 <!-- Footer -->
 <footer>
-  &copy; 2025 Offside Opinions
+  &copy; 2025 Offside Opinions |
+  <a href="https://www.instagram.com/offsideopinionslimited" target="_blank"><img src="images/instagram.png" alt="Instagram" width="25"></a>
+  <a href="https://x.com/0ffside0pinions" target="_blank"><img src="images/x.png" alt="X" width="25"></a>
+  <a href="https://www.facebook.com/profile.php?id=61580012156394" target="_blank"><img src="images/facebook.png" alt="Facebook" width="25"></a>
+  <a href="https://www.linkedin.com/in/offsideopinions-limited-0052a9381" target="_blank"><img src="images/linkedin.png" alt="LinkedIn" width="25"></a>
 </footer>
 
 <script>
-let selectedCategory = 'all';
-
-function selectCategory(category, btn){
-  selectedCategory = category;
-  document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  performSearch();
-}
-
 async function performSearch() {
-  const query = document.getElementById('searchInput').value.trim() || "Top 10 football players";
+  const query = document.getElementById('searchInput').value.trim();
   const resultsContainer = document.getElementById('results');
-  resultsContainer.innerHTML = `<p>Loading results for "${query}"...</p>`;
+
+  resultsContainer.innerHTML = `<p>Searching${query ? ` for "${query}"` : ''}...</p>`;
 
   try {
-    const res = await fetch(`/.netlify/functions/ai-search?query=${encodeURIComponent(query)}`);
+    const res = await fetch(`/functions/ai-top10?query=${encodeURIComponent(query)}`);
     const data = await res.json();
-    const top10List = data.top10.split('\n').filter(Boolean);
 
-    resultsContainer.innerHTML = top10List.map((item, i) => `
+    resultsContainer.innerHTML = data.map((item,index) => `
       <div class="card">
-        <img src="images/${i+1}.jpg" alt="${item}">
-        <h3>${item}</h3>
-        <a href="#" class="cta-btn">View on Amazon</a>
+        ${index<3 ? '<div class="badge featured">Top</div>' : ''}
+        <img src="${item.image}" alt="${item.title}" />
+        <h3>${item.title}</h3>
+        <p>${item.description}</p>
+        <p class="price">${item.price}</p>
+        <a href="${item.affiliateLink}" target="_blank" class="cta-btn">View Now</a>
       </div>
     `).join('');
+
   } catch (err) {
-    resultsContainer.innerHTML = `<p>Error loading results. Please try again.</p>`;
+    resultsContainer.innerHTML = `<p>Error loading results</p>`;
+    console.error(err);
   }
 }
 
-window.onload = performSearch;
+// Load a default Top 10 on page load
+window.onload = () => { 
+  document.getElementById('searchInput').value = "Top 10 Football Boots";
+  performSearch();
+};
 </script>
 
 </body>
