@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Offside Opinions | The Ultimate Top 10s</title>
+<style>
+/* Base */
+body {
+  margin:0;
+  font-family: Arial,sans-serif;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  background: linear-gradient(to bottom, #1c1c1c, #2a2a2a);
+  overflow-x: hidden;
+}
+
+/* Hero */
+.hero {
+  width:100%;
+  height:65vh;
+  background: url('images/10.jpg') no-repeat center/cover;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  position:relative;
+}
+.hero::after {
+  content:"";
+  position:absolute;
+  top:0; left:0; right:0; bottom:0;
+  background: rgba(0,0,0,0.35);
+}
+.hero-content {
+  position:relative;
+  z-index:1;
+}
+.hero h1 { font-size:3rem; color: gold; margin-bottom:10px; text-shadow:0 0 15px #ffd700; }
+.hero p { font-size:1.2rem; text-shadow:0 0 5px #000; }
+
+/* Categories */
+.categories {
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  margin:25px 0;
+  flex-wrap:wrap;
+}
+.category-btn {
+  background:#111;
+  color:gold;
+  border:none;
+  padding:12px 25px;
+  border-radius:25px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:0.3s;
+}
+.category-btn:hover,
+.category-btn.active { background:gold; color:#000; transform:scale(1.05); }
+
+/* Search */
+.search-container { margin:0 0 50px; text-align:center; }
+.search-box {
+  width:80%;
+  max-width:500px;
+  padding:15px 25px;
+  border-radius:50px;
+  border:2px solid gold;
+  font-size:1rem;
+  outline:none;
+  background:#111;
+  color:#fff;
+}
+.search-btn {
+  margin-left:-55px;
+  background:gold;
+  border:none;
+  padding:15px 25px;
+  border-radius:50px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:0.3s;
+}
+.search-btn:hover { background:#ffd700; transform:scale(1.05); }
+
+/* Cards & Premium Styling */
+.results, .trending-container { width:90%; max-width:1200px; margin:20px auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:25px; }
+
+.card {
+  background: rgba(17,17,17,0.85);
+  border-radius:15px;
+  padding:20px;
+  text-align:center;
+  border:1px solid #444;
+  box-shadow:0 10px 30px rgba(0,0,0,0.6),0 0 15px rgba(255,215,0,0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, opacity 0.6s ease;
+  position:relative;
+  overflow:hidden;
+  opacity:0;
+  transform: translateY(20px);
+}
+
+.card.visible { opacity:1; transform: translateY(0); }
+
+.card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow:0 15px 40px rgba(0,0,0,0.8),0 0 25px rgba(255,215,0,0.6);
+  border-color: gold;
+}
+
+.card img {
+  width:100%;
+  border-radius:15px;
+  margin-bottom:15px;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.card:hover img {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+.card h3 {
+  color: gold;
+  margin-bottom:10px;
+  font-size:1.4rem;
+  text-shadow: 0 0 5px #ffd700;
+}
+
+.cta-btn {
+  display:inline-block;
+  margin-top:10px;
+  background: gold;
+  color:#000;
+  padding:10px 20px;
+  border-radius:25px;
+  text-decoration:none;
+  font-weight:bold;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cta-btn:hover {
+  background:#ffd700;
+  transform: scale(1.05);
+  box-shadow:0 0 15px #ffd700;
+}
+
+/* Badges */
+.badge {
+  position:absolute;
+  top:10px;
+  left:10px;
+  background:red;
+  color:#fff;
+  padding:5px 10px;
+  border-radius:5px;
+  font-size:0.85rem;
+  font-weight:bold;
+  text-transform:uppercase;
+  z-index:2;
+}
+
+.badge.featured {
+  background: gold;
+  color:#000;
+  animation: glow 2s ease-in-out infinite;
+  box-shadow: 0 0 10px rgba(255,215,0,0.5);
+}
+
+@keyframes glow {
+  0% { box-shadow:0 10px 20px rgba(255,215,0,0.4); }
+  50% { box-shadow:0 15px 25px rgba(255,215,0,0.7); }
+  100% { box-shadow:0 10px 20px rgba(255,215,0,0.4); }
+}
+
+/* Stadium Footer Section with Parallax */
+.stadium-footer {
+  width:100%;
+  background: url('images/11.jpg') no-repeat center/cover;
+  background-attachment: fixed;
+  background-size: cover;
+  position:relative;
+  margin-top:50px;
+}
+.stadium-footer::after {
+  content:"";
+  position:absolute;
+  top:0; left:0; right:0; bottom:0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2));
+}
+.stadium-content {
+  position:relative;
+  z-index:1;
+  padding:50px 20px;
+  text-align:center;
+  color: gold;
+}
+.stadium-content h2 {
+  font-size:2rem;
+  margin-bottom:20px;
+  text-shadow:0 0 10px #ffd700;
+}
+.stadium-content p {
+  font-size:1.2rem;
+  max-width:700px;
+  margin:0 auto;
+  text-shadow:0 0 5px #000;
+}
+
+/* Footer */
+footer { width:100%; background:#111; color:gold; text-align:center; padding:20px 0; margin-top:0; border-top:1px solid gold; }
+footer a img { vertical-align:middle; margin:0 5px; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-content">
+    <h1>Offside Opinions</h1>
+    <p>The Ultimate Top 10s in Football</p>
+  </div>
+</div>
+
+<div class="categories">
+  <button class="category-btn active" onclick="selectCategory('all', this)">All</button>
+  <button class="category-btn" onclick="selectCategory('football', this)">Football</button>
+  <button class="category-btn" onclick="selectCategory('retro', this)">Retro</button>
+  <button class="category-btn" onclick="selectCategory('kits', this)">Kits</button>
+</div>
+
+<div class="search-container">
+  <input type="text" class="search-box" id="searchInput" placeholder="Search Top 10 Boots, Kits, Players...">
+  <button class="search-btn" onclick="performSearch()">Go</button>
+</div>
+
+<div class="results" id="results"></div>
+
+<div class="trending-container">
+  <h2>Trending & Recommended</h2>
+  <div class="results" id="trendingResults"></div>
+</div>
+
+<div class="stadium-footer">
+  <div class="stadium-content">
+    <h2>Experience Football Like Never Before</h2>
+    <p>Explore our Top 10 lists of players, kits, boots, and iconic moments — all curated for football fans.</p>
+  </div>
+</div>
+
+<footer>
+  &copy; 2025 Offside Opinions |
+  <a href="#"><img src="images/instagram.png" alt="Instagram" width="25"></a>
+  <a href="#"><img src="images/x.png" alt="X" width="25"></a>
+  <a href="#"><img src="images/facebook.png" alt="Facebook" width="25"></a>
+  <a href="#"><img src="images/linkedin.png" alt="LinkedIn" width="25"></a>
+</footer>
+
+<script>
+let selectedCategory='all';
+const amazonAffiliates={"GB":"offsideopinio-21","DE":"offsideopin00-21","FR":"offsideopi0d6-21","ES":"offsideopin06-21","IT":"offsideopin01-21"};
+const heroImages=["images/10.jpg","images/11.jpg","images/14.jpg","images/15.jpg","images/16.jpg","images/17.jpg"];
+let currentHero=0;
+
+const allItems=[
+  {title:"Top 10 Football Boots", image:"images/13.jpg", keywords:["boot","boots"], asin:"B07VGRJDFY"},
+  {title:"Top 10 Kits", image:"images/12.jpg", keywords:["kit","kits"], asin:"B08C1W5N6L"},
+  {title:"Top 10 African Footballers", image:"images/1.jpg", keywords:["african"], asin:"B07VGRJDFY"},
+  {title:"Top 10 Asian Footballers", image:"images/2.jpg", keywords:["asian"], asin:"B07VGRJDFY"},
+  {title:"Top 10 South American Footballers", image:"images/3.jpg", keywords:["south","american"], asin:"B07VGRJDFY"},
+  {title:"Top 10 Scandinavian Footballers", image:"images/4.jpg", keywords:["scandinavian"], asin:"B07VGRJDFY"},
+  {title:"Top 10 Keepers", image:"images/5.jpg", keywords:["keeper"], asin:"B07VGRJDFY"},
+  {title:"Top 10 Women Players", image:"images/6.jpg", keywords:["woman"], asin:"B07VGRJDFY"},
+  {title:"Top 10 Captains", image:"images/7.jpg", keywords:["captain"], asin:"B07VGRJDFY"},
+  {title:"Top 10 European Strikers", image:"images/8.jpg", keywords:["striker","european"], asin:"B07VGRJDFY"},
+  {title:"Top 10 Managers & Coaches", image:"images/9.jpg", keywords:["manager","coach"], asin:"B07VGRJDFY"},
+  {title:"GOAT Mount Rushmore", image:"images/18.jpg", keywords :["goat","mount","rushmore"], asin:"B07VGRJDFY"}
+];
+
+// Hero rotation
+setInterval(() => {
+  currentHero = (currentHero+1)%heroImages.length;
+  document.querySelector('.hero').style.backgroundImage = `url('${heroImages[currentHero]}')`;
+}, 8000);
+
+// Category selection
+function selectCategory(category, btn) {
+  selectedCategory = category;
+  document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  performSearch();
+}
+
+// Perform search
+function performSearch() {
+  const query = document.getElementById('searchInput').value.trim().toLowerCase();
+  const resultsContainer = document.getElementById('results');
+  resultsContainer.innerHTML = '';
+
+  let filtered = allItems.filter(item => 
+    (selectedCategory==='all' || item.keywords.includes(selectedCategory)) &&
+    (query==='' || item.title.toLowerCase().includes(query) || item.keywords.some(k=>k.includes(query)))
+  );
+
+  if(filtered.length===0) filtered = allItems;
+
+  filtered.forEach((item,index)=>{
+    const country="GB"; // could detect user country for affiliate later
+    const affiliateId=amazonAffiliates[country]||amazonAffiliates["GB"];
+    const url=`https://www.amazon.co.uk/dp/${item.asin}/?tag=${affiliateId}`;
+    const card = document.createElement('div');
+    card.className='card';
+    if(index<3) card.innerHTML = `<div class="badge featured">Top</div>` + card.innerHTML;
+    card.innerHTML+=`
+      <img src="${item.image}" alt="${item.title}">
+      <h3>${item.title}</h3>
+      <a href="${url}" target="_blank" class="cta-btn">View on Amazon</a>
+    `;
+    resultsContainer.appendChild(card);
+    // Trigger animation
+    setTimeout(()=>card.classList.add('visible'), index*100);
+  });
+
+  // Trending (simplified)
+  const trendingContainer = document.getElementById('trendingResults');
+  trendingContainer.innerHTML='';
+  const trendingTerms=["Top 10 Boots","Top 10 Kits","Top 10 Players"];
+  trendingTerms.forEach(term=>{
+    const div = document.createElement('div');
+    div.className='card visible';
+    div.innerHTML=`<h3>${term}</h3><p>Popular search</p>
+    <a href="#" class="cta-btn" onclick="document.getElementById('searchInput').value='${term}'; performSearch(); return false;">View Now</a>`;
+    trendingContainer.appendChild(div);
+  });
+}
+
+// Scroll animations for cards
+function revealOnScroll() {
+  const cards = document.querySelectorAll('.card');
+  const windowHeight = window.innerHeight;
+  cards.forEach(card => {
+    const top = card.getBoundingClientRect().top;
+    if(top < windowHeight - 100) card.classList.add('visible');
+  });
+}
+window.addEventListener('scroll', revealOnScroll);
+
+// Initial search
+window.onload = () => { performSearch(); revealOnScroll(); }
+</script>
+</body>
+</html>
+
+
